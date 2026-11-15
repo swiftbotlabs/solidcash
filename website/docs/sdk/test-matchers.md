@@ -47,6 +47,10 @@ Never pass the result of `.send()`. A receipt carries nothing the matchers can e
 | `toBeReverted()` | builder or stateful call | Debugs a builder; sends a call |
 | `toEmit(contract, event, args?)` | builder or stateful call | Builds a builder without broadcasting; sends a call |
 
+`toFailRequire()` also passes when the transaction fails for a reason other than a `require`, for example a relative
+timelock (`this.age`, `OP_CHECKSEQUENCEVERIFY`) that is not yet satisfied, because it reports any script failure found
+by the local evaluation. Use `toFailRequireWith(reason)` when the test must pin the exact failure.
+
 ## Require Failure Matchers
 
 Test that a transaction fails with a specific `require` message:
