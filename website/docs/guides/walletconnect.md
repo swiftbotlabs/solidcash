@@ -294,6 +294,19 @@ async function signWizardTransaction(
 
 See the [WizardConnect documentation] for how to set up the `dappConnectionManager` and establish a connection with the user's wallet.
 
+### Authorizing a call with a sibling input
+
+Some wallets sign over the whole redeem script rather than the body of the dispatched function a dapp asks them to
+sign, so a signature check inside a multi-function contract can fail with a correctly signed request. A pattern that
+works with any wallet is to authorize the call with a second input: a plain P2PKH coin from the signer's own address,
+signed by the wallet like any payment. The contract then checks that this input belongs to the expected key instead of
+checking a signature itself.
+
+This is only safe if the contract also pins how that input was signed. Require its signature to use `SIGHASH_ALL` or
+`SIGHASH_ALL | SIGHASH_UTXOS` (read the last byte of its unlocking signature), and fix the outputs the call may
+create. Otherwise a `SIGHASH_SINGLE`, `SIGHASH_NONE` or `ANYONECANPAY` signature that the owner made for another
+transaction could be reused to authorize this one.
+
 [Tokenaut.cash]: https://tokenaut.cash/dapps?filter=walletconnect
 [wc2-bch-bcr]: https://github.com/mainnet-pat/wc2-bch-bcr
 [BCH research forum]: https://bitcoincashresearch.org/t/wallet-connect-v2-support-for-bitcoincash/
