@@ -12,9 +12,10 @@ declare global {
   namespace jest {
     // eslint-disable-next-line
     interface Matchers<R> {
-      toLog(value?: RegExp | string): Promise<void>;
-      toFailRequireWith(value: RegExp | string): Promise<void>;
-      toFailRequire(): Promise<void>;
+      // Synchronous: they debug the transaction in place, so they return R (no Promise to await).
+      toLog(value?: RegExp | string): R;
+      toFailRequireWith(value: RegExp | string): R;
+      toFailRequire(): R;
       // Solidity-style aliases (Hardhat compatibility)
       toBeReverted(): Promise<void>;
       toBeRevertedWith(value: RegExp | string): Promise<void>;
