@@ -66,6 +66,10 @@ compatibility mode: `.sol` sources and `pragma solidity` are accepted, and the A
 selectors. Remove the option for native mode, which has a more compact ABI and sha256-derived selectors. Choose the
 mode before the first deployment, because it changes ABI bytes, selectors and some storage layouts. See
 [Solidity Import Compatibility](/docs/compiler/solidity-import-compat).
+
+Because the mode changes the bytecode, the same source compiled by `solidhat compile` with this config and by plain
+`solidc` (native mode by default) gives two different contracts with two different addresses. Fund, test and deploy
+the artifact from one compiler setting, so you never send coins to the address of the other build.
 :::
 
 :::tip Working with an AI coding agent
